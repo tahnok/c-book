@@ -18,7 +18,8 @@ main()
       copy(longest, line);
     }
   if (max > 0)
-    printf("%s", longest);
+    printf("Longest line is %d chars\n", max);
+    printf("It is:\n%s", longest);
   return 0;
 }
 
