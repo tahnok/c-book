@@ -9,8 +9,15 @@ unsigned int getbits(unsigned int x, int p, int n) {
 //Returns x with the n bits that begin at position p set to the rightmost n bits of y, leaving the other bits unchanged
 unsigned int setbits(unsigned int x, int p, int n, unsigned int y)
 {
-  unsigned int all_ones_mask = (~0 << p) & ~(0 << (n+p+1));
+  //will have 0s at position p to p+n and 1s everywhere else
+  unsigned int ones_mask = (~0 << p) | (~0 >> (p+n+1));
   return x | (~0 << p);
+}
+//setbits(0b001,3,2,0b010) -> 0b101
+//
+unsigned int ones_mask(int p, int n)
+{
+  return (~0 << p) | ~(~0 << (p-n));
 }
 
 void printbits(unsigned int counter)
@@ -24,10 +31,5 @@ void printbits(unsigned int counter)
 
 int main()
 {
-  printbits(0);
-  printbits(1);
-  printbits(2);
-  printbits(3);
-  printbits(4);
-  printbits(8);
+  printbits(ones_mask(9,8));
 }
