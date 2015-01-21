@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <limits.h>
 
 /* getbits: get n bits from position p */
 unsigned int getbits(unsigned int x, int p, int n) {
@@ -12,15 +11,15 @@ unsigned int ones_mask(int p, int n)
 }
 
 
-//Returns x with the n bits that begin at position p set to the rightmost n bits of y, leaving the other bits unchanged
+//Returns x with the n bits that begin
+//at position p set to the rightmost n bits of y,
+//leaving the other bits unchanged
 unsigned int setbits(unsigned int x, int p, int n, unsigned int y)
 {
   unsigned int mask = x & ones_mask(p,n);
-  unsigned int set = getbits(y, n-1, n) << p;
+  unsigned int set = getbits(y, n-1, n) << (p - n);
   return mask | set;
 }
-//setbits(0b001,3,2,0b010) -> 0b101
-//
 
 void printbits(unsigned int counter)
 {
@@ -33,7 +32,7 @@ void printbits(unsigned int counter)
 
 int main()
 {
-  unsigned int x = ~0;
+  unsigned int x = 0;
   int p = 5;
   int n = 3;
   unsigned int y = ~0;
@@ -46,6 +45,8 @@ int main()
   printbits(n);
   printf("y: ");
   printbits(y);
+  printbits(x & ones_mask(p,n));
+  printbits(getbits(y,n-1,n) << (p -n));
   printf("=  ");
   printbits(setbits(x,p,n,y));
 }
