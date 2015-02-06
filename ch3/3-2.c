@@ -14,26 +14,50 @@ void escape(char source[], char dest[])
   {
     switch (c) {
       case '\t':
-        putchar('+');
         dest[j] = '\\';
         ++j;
         dest[j] = 't';
         break;
       case '\n':
-        putchar('+');
         dest[j] = '\\';
         ++j;
         dest[j] = 'n';
         break;
       default:
-        putchar('.');
         dest[j] = c;
         break;
     }
     ++j;
   }
   dest[j] = '\0';
-  putchar('\n');
+}
+
+void unescape(char source[], char dest[])
+{
+  int i,j = 0;
+  char c,d,e;
+  while ((c = source[i++]) != '\0')
+  {
+    switch (c) {
+      case '\\':
+        d = source[i];
+        i++;
+        switch (d) {
+          case 'n':
+            e = '\n';
+            break;
+          case 't':
+            e = '\t';
+            break;
+        }
+        break;
+      default:
+        dest[j] = c;
+        break;
+    }
+    dest[j++] = e;
+  }
+  dest[j+1] = '\0';
 }
 
 void print_chars(char s[])
@@ -51,10 +75,14 @@ void print_chars(char s[])
 int main()
 {
   char test[] = "\t\n";
-  char output[sizeof(test) / sizeof(char)];
+  char output[1000];
+  char output2[1000];
   printf("input: %s\n", test);
   escape(test,output);
   printf("input: %s\n", test);
   printf("output: %s\n", output);
-  print_chars(output);
+  unescape(output, output2);
+  printf("output 2: %s\n", output2);
+  print_chars(test);
+  print_chars(output2);
 }
