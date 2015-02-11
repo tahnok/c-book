@@ -4,21 +4,17 @@ void expand(char s1[], char s2[])
 {
   int i = 0;
   int j = 0;
-  int used = 0;
   char c, start, end;
   while((c = s1[i++]) != '\0'){
     if(c == '-' && (i-2) >= 0 && s1[i] != '\0')
     {
-      j--;
-      used = 1;
-      start = s1[i-2];
+      start = s1[i-2] + 1;
       end = s1[i];
-      while(start <= end)
+      while(start < end)
       {
         s2[j++] = start++;
       }
     } else {
-      used = 0;
       s2[j++] = c;
     }
   }
