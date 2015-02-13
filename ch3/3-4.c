@@ -31,9 +31,23 @@ void itoa(int n, char s[])
   reverse(s);
 }
 
+void printbits(unsigned int counter)
+{
+  for(int x = 0; x < 33; x++){
+    printf("%u", (counter >> (32 - x)) & 1);
+  }
+  printf(": %u", counter);
+  printf("\n");
+}
+
 int main()
 {
   char number[1000];
-  itoa(INT_MIN, number);
+  itoa(-30001, number);
   printf("%d, %s\n", INT_MIN, number);
 }
+
+/*
+ * problem is that -INT_MIN == INT_MIN
+ * this can be solved by...
+ */
