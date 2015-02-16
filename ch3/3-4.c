@@ -1,9 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <limits.h>
 
 void reverse(char toreverse[])
 {
   int pos, i, j;
+  pos = 0;
   char temp;
   while(toreverse[pos++] != '\0');
   pos--;
@@ -19,16 +21,15 @@ void reverse(char toreverse[])
 void itoa(int n, char s[])
 {
   int i, sign;
-  if ((sign = n) < 0) /* record sign */
-    n = -n; /* make n positive */
+  sign = n;
   i = 0;
   do { /* generate digits in reverse order */
-    s[i++]=n%10+'0'; /*getnextdigit*/
-  } while ((n /= 10) > 0);
+    s[i++]= abs(n % 10) +'0'; /*getnextdigit*/
+  } while (n /= 10);
   if (sign < 0)
     s[i++] = '-';
   s[i] = '\0';
-  reverse(s);
+ reverse(s);
 }
 
 void printbits(unsigned int counter)
@@ -43,11 +44,11 @@ void printbits(unsigned int counter)
 int main()
 {
   char number[1000];
-  itoa(-30001, number);
+  itoa(INT_MIN, number);
   printf("%d, %s\n", INT_MIN, number);
 }
 
 /*
  * problem is that -INT_MIN == INT_MIN
- * this can be solved by...
+ * since -INT_MIN is larger than INT_MAX, it stays INT_MIN
  */
