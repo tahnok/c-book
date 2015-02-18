@@ -17,23 +17,20 @@ void reverse(char toreverse[])
   }
 }
 
-void itob(int n, char s[], int b)
+/* itoa: convert n to characters in s of width w */
+void itoa(int n, char s[], int w)
 {
-  int i, sign, digit;
-  char chardigit;
+  int i, sign;
   sign = n;
   i = 0;
   do { /* generate digits in reverse order */
-    digit = abs(n % b);
-    if(digit < 10) {
-      chardigit = digit + '0';
-    } else {
-      chardigit = (digit - 10) + 'a';
-    }
-    s[i++] = chardigit;
-  } while (n /= b);
+    s[i++]= abs(n % 10) +'0'; /*getnextdigit*/
+    w--;
+  } while (n /= 10);
   if (sign < 0)
     s[i++] = '-';
+  while(w--)
+    s[i++] = ' ';
   s[i] = '\0';
  reverse(s);
 }
@@ -41,9 +38,8 @@ void itob(int n, char s[], int b)
 int main()
 {
   char number[1000];
-  int n = 1;
-  int base = 16;
-  itob(n, number, base);
+  int n = 400;
+  int width = 5;
+  itoa(n, number, width);
   printf("%d, %s\n", n, number);
-
 }
