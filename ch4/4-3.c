@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h> /* for atof() */
 #include <ctype.h>
+#include <math.h>
 
 
 #define MAXOP 100 /* max size of operand or operator */
@@ -45,6 +46,10 @@ main()
         else
           printf("error: zero divisor\n");
         break;
+      case '%':
+        op2 = pop();
+        push(fmod(pop(), op2));
+        break;
       case '\n':
         printf("\t%.8g\n", pop());
         break;
@@ -87,9 +92,10 @@ int getop(char s[])
   while ((s[0] = c = getch()) == ' ' || c == '\t')
     ;
   s[1] = '\0';
-  if (!isdigit(c) && c != '.')
-    return c; /* not a number */ i = 0;
-  if (isdigit(c)) /* collect integer part */
+  if (!isdigit(c) && c != '.' && c != '-')
+    return c; /* not a number */
+  i = 0;
+  if (isdigit(c) || c == '-') /* collect integer part */
     while (isdigit(s[++i] = c = getch()))
       ;
   if (c == '.') /* collect fraction part */
