@@ -4,27 +4,23 @@
 #include <math.h>
 #include <string.h>
 
-
 #define MAXOP 100 /* max size of operand or operator */
 #define NUMBER '0' /* signal that a number was found */
-
 #define MAXVAL 100
-
 #define BUFSIZE 100
 
 int getop(char []);
 void push(double);
 double pop(void);
-
 int getch(void);
 void ungetch(int);
 
-/* -------------------- */
 int sp = 0; /* next free stack position */
 double val[MAXVAL]; /* value stack */
+int stackop = 0;
 
 /* reverse Polish calculator */
-main()
+int main()
 {
   int type;
   double op2;
@@ -57,30 +53,40 @@ main()
         push(fmod(pop(), op2));
         break;
       case '\n':
-        printf("\t%.8g\n", pop());
+        if(!stackop) {
+          printf("\t%.8g\n", pop());
+        } else {
+          stackop = 0;
+          printf("stackop!");
+        }
+        break;
+      case 'p':
+        stackop = 1;
+        op1 = pop();
+        push(op1);
+        printf("\t%.8g\n", op1);
+        break;
+      case 'k':
+        sp = 0;
+        break;
+      case 's':
+        op2 = pop();
+        op1 = pop();
+        push(op2);
+        push(op1);
+        break;
+      case 'c':
+        op2 = pop();
+        push(op2);
+        push(op2);
         break;
       default:
-        if(!strcmp("clear", s)) {
-          sp = 0;
-        } else if(!strcmp("swap", s)) {
-          op2 = pop();
-          op1 = pop();
-          push(op2);
-          push(op1);
-        } else if(!strcmp("copy", s)) {
-          op2 = pop();
-          push(op2);
-          push(op2);
-        } else {
-          printf("error: unknown command %s\n", s);
-        }
+        printf("error: unknown command %s\n", s);
         break;
     }
   }
   return 0;
 }
-
-
 
 /* push: push f onto value stack */
 void push(double f)
@@ -120,6 +126,8 @@ int getop(char s[])
   s[i] = '\0';
   if (c != EOF)
     ungetch(c);
+  if(!strcmp("-", s))
+      return '-';
   return NUMBER;
 }
 
