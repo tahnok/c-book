@@ -16,12 +16,13 @@ double pop(void);
 int getch(void);
 void ungetch(int);
 double vartoval(char []);
+double setvar(double);
 
 int sp = 0; /* next free stack position */
 double val[MAXVAL]; /* value stack */
 int stackop = 0;
 
-char lastvar;
+int lastvar;
 double vars[26];
 
 /* reverse Polish calculator */
@@ -37,7 +38,6 @@ int main()
         push(atof(s));
         break;
       case VAR:
-        pop();
         push(vartoval(s));
         break;
       case '+':
@@ -104,6 +104,7 @@ int main()
       case '=':
         op2 = pop();
         push(setvar(pop()));
+        break;
       default:
         printf("error: unknown command %s\n", s);
         break;
@@ -181,6 +182,11 @@ void ungetch(int c)
 
 double vartoval(char c[])
 {
-  int i = tolower(c[0]) - 'a';
-  return vars[i];
+  return vars[lastvar = (tolower(c[0]) - 'a')];
+}
+
+double setvar(double v)
+{
+  vars[lastvar] = v;
+  return v;
 }
