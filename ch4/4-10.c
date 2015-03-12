@@ -133,6 +133,7 @@ double pop(void)
 #define LINE_LIMIT  1000
 char line[LINE_LIMIT];
 int line_index = 0;
+int line_length = -1;
 int getline2(char s[], int lim)
 {
   int c, i;
@@ -145,14 +146,20 @@ int getline2(char s[], int lim)
   return i;
 }
 
+void checkEnd() {
+  if(line[line_index] == '\0' || line_index > line_length) {
+    line_length = getline2(line, LINE_LIMIT);
+    line_index = 0;
+  }
+}
+
 /* getop: get next character or numeric operand */
 int getop(char s[])
 {
   int i, c;
-  if(line[line_index] == '\0')
-    getline2(line, LINE_LIMIT);
+  checkEnd();
 
-  while ((s[0] = c = line[line_index++]) == ' ' || c == '\t')
+  while (((s[0] = c = line[++line_index]) == ' ' || c == '\t') && c != '\0')
     ;
   s[1] = '\0';
   if (!isdigit(c) && c != '.' && c != '-') {
