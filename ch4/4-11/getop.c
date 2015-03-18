@@ -5,6 +5,15 @@
 int getop(char s[])
 {
   int i, c;
+  static int leftover_used = 0;
+  static int leftover;
+
+  if (leftover_used) {
+    leftover_used = 0;
+    c = leftover
+  } else {
+    c = getch();
+  }
 
   while ((s[0] = c = getch()) == ' ' || c == '\t')
     ;
@@ -20,7 +29,9 @@ int getop(char s[])
     while (isdigit(s[++i] = c = getch()))
       ;
   s[i] = '\0';
-  if (c != EOF)
-    ungetch(c);
+  if (c != EOF) {
+    leftover = c;
+    leftover_used = 1;
+  }
   return NUMBER;
 }
