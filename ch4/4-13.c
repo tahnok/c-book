@@ -3,28 +3,30 @@
 
 void my_reverse(char toreverse[], int start, int end)
 {
-  //TODO
-
+  if(start >= end)
+    return;
+  printf("swapping %d and %d\n", start, end);
+  char temp = toreverse[start];
+  toreverse[start] = toreverse[end];
+  toreverse[end] = temp;
+  my_reverse(toreverse, ++start, --end);
+  return;
 }
 
 void reverse(char toreverse[])
 {
-  int pos, i, j;
-  pos = 0;
-  char temp;
-  while(toreverse[pos++] != '\0');
+  int pos = 0;
+  do {
+    pos++;
+  } while(toreverse[pos] != '\0');
+  printf("%d chars\n", pos);
   pos--;
-  for(i = 0; i < pos / 2; i++) {
-    j = pos - i - 1;
-    temp = toreverse[i];
-    toreverse[i] = toreverse[j];
-    toreverse[j] = temp;
-  }
+  my_reverse(toreverse, 0, pos);
 }
 
 int main()
 {
-  char number[] = "1234567890";
+  char number[] = "123456789";
   reverse(number);
   printf("%s\n", number);
 }
