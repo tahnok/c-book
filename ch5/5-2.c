@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include <ctype.h>
 
 #define MAX 10
@@ -7,7 +8,7 @@ int getch(void);
 void ungetch(int);
 /* getint: get next integer from input into *pn */
 
-int getflot(float *pn)
+int getfloat(float *pn)
 {
   int c, sign, i;
   float fractional = 0.0;
@@ -27,10 +28,11 @@ int getflot(float *pn)
     return 0;
   }
   if (c == '.') {
+    c = getch();
     for(i = 0, fractional = 0.0; isdigit(c); i++, c = getch()) {
       fractional = 10 * fractional + (c - '0');
     }
-    *pn = *pn + (fractional / (i * 10.0));
+    *pn = *pn + (fractional / pow(10.0, i));
   }
 
   *pn *= sign;
@@ -41,7 +43,10 @@ int getflot(float *pn)
 
 int main()
 {
-  char[] = 
+  float f;
+  getfloat(&f);
+  printf("%f\n", f);
+}
 
 
 int bufp = 0;
