@@ -3,15 +3,17 @@
 #define MAXLINES 5000 /* max #lines to be sorted */
 char *lineptr[MAXLINES]; /* pointers to text lines */
 
-int readlines(char *lineptr[], int nlines);
+int readlines(char *lineptr[], int nlines, char line[], int line_size);
 void writelines(char *lineptr[], int nlines);
 void qsort(char *lineptr[], int left, int right);
 
+#define MAXLEN 1000 /* max length of any input line */
 /* sort input lines */
 int main()
 {
   int nlines; /* number of input lines read */
-  if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
+  char line[MAXLEN];
+  if ((nlines = readlines(lineptr, MAXLINES, line, MAXLEN)) >= 0) {
     qsort(lineptr, 0, nlines-1);
     writelines(lineptr, nlines);
     return 0;
@@ -20,7 +22,7 @@ int main()
   }
 }
 
-#define MAXLEN 1000 /* max length of any input line */
+char *alloc(int);
 
 int getline2(char s[], int lim)
 {
@@ -36,12 +38,15 @@ int getline2(char s[], int lim)
   return i;
 }
 
-int readlines(char *lineptr[], int maxlines) {
+//Rewrite readlines to store lines in an array supplied by main,
+//rather than calling alloc to maintain storage. How much faster is the program?
+
+int readlines(char *lineptr[], int maxlines, char line[], int line_size) {
   int len, nlines;
-  char *p, line[MAXLEN];
+  char *p;
   nlines = 0;
   while ((len = getline2(line, MAXLEN)) > 0)
-    if (nlines >= maxlines || p = alloc(len) == NULL)
+    if (nlines >= maxlines)
       return -1;
     else {
       line[len-1] = '\0'; /* delete newline */ strcpy(p, line);
