@@ -35,7 +35,7 @@ void month_day(int year, int yearday, int *pmonth, int *pday) {
 
 int main()
 {
-  printf("%d\n", day_of_year(2015, -1, 31));
+  printf("%d\n", day_of_year(2015, 4, 14));
   int day, month;
   month_day(0, 365, &day, &month);
   printf("%d %d\n", day, month);
