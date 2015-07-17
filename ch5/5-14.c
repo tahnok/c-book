@@ -1,5 +1,9 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+
+#include "../libs/readlines.c"
+#include "../libs/writelines.c"
 
 #define MAXLINES 5000 /* max #lines to be sorted */
 char *lineptr[MAXLINES]; /* pointers to text lines */
@@ -34,7 +38,31 @@ int main(int argc, char *argv[])
   }
 }
 
-#include <stdlib.h>
+/* qsort: sort v[left]...v[right] into increasing order */
+void qsort2(void *v[], int left, int right,
+    int (*comp)(void *, void *))
+{
+  int i, last;
+  void swap(void *v[], int, int);
+  if (left >= right)     /* do nothing if array contains */
+    return;              /* fewer than two elements */
+  swap(v, left, (left +  right)/2);
+  last = left;
+  for (i = left+1; i <= right; i++)
+    if ((*comp)(v[i], v[left]) < 0)
+      swap(v, ++last, i);
+  swap(v, left, last);
+  qsort2(v, left, last-1, comp);
+  qsort2(v, last+1, right, comp);
+}
+
+void swap(void *v[], int i, int j) {
+  void *temp;
+  temp = v[i];
+  v[i] = v[j];
+  v[j] = temp;
+}
+
 /* numcmp: compare s1 and s2 numerically */
 int numcmp(char *s1, char *s2)
 {
@@ -49,9 +77,3 @@ int numcmp(char *s1, char *s2)
     return 0;
 }
 
-void swap(void *v[], int i, int j) {
-  void *temp;
-  temp = v[i];
-  v[i] = v[j];
-  v[j] = temp;
-}
