@@ -21,20 +21,25 @@ int main(int argc, char *argv[])
   int numeric = 0; /* 1 if numeric sort */
   int reverse = 0; /* 1 if reverse sort */
 
-  if (argc > 1) {
+  if (argc > 2) {
     while(argc--) {
-      printf("argv: %d\n", argc);
+      if(strcmp(argv[argc], "-n") == 0)
+        numeric = 1;
+      if(strcmp(argv[argc], "-r") == 0)
+        reverse = 1;
     }
   }
   if ((nlines = readlines(lineptr, MAXLINES)) >= 0)
   {
     qsort2((void**) lineptr, 0, nlines-1,
         (int (*)(void*,void*))(numeric ? numcmp : strcmp));
+    if(reverse)
+      //reverse
     writelines(lineptr, nlines);
     return 0;
-  } else
-  {
-    printf("input too big to sort\n"); return 1;
+  } else {
+    printf("input too big to sort\n");
+    return 1;
   }
 }
 
