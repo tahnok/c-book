@@ -4,6 +4,7 @@
 
 #include "../libs/readlines.c"
 #include "../libs/writelines.c"
+#include "../libs/reverselines.c"
 
 #define MAXLINES 5000 /* max #lines to be sorted */
 char *lineptr[MAXLINES]; /* pointers to text lines */
@@ -11,6 +12,7 @@ char *lineptr[MAXLINES]; /* pointers to text lines */
 
 int readlines(char *lineptr[], int nlines);
 void writelines(char *lineptr[], int nlines);
+void reverselines(char *lineptr[], int nlines);
 void qsort2(void *lineptr[], int left, int right, int (*comp)(void *, void *));
 int numcmp(char *, char *);
 
@@ -21,7 +23,7 @@ int main(int argc, char *argv[])
   int numeric = 0; /* 1 if numeric sort */
   int reverse = 0; /* 1 if reverse sort */
 
-  if (argc > 2) {
+  if (argc >= 2) {
     while(argc--) {
       if(strcmp(argv[argc], "-n") == 0)
         numeric = 1;
@@ -34,7 +36,7 @@ int main(int argc, char *argv[])
     qsort2((void**) lineptr, 0, nlines-1,
         (int (*)(void*,void*))(numeric ? numcmp : strcmp));
     if(reverse)
-      //reverse
+      reverselines(lineptr, nlines);
     writelines(lineptr, nlines);
     return 0;
   } else {
